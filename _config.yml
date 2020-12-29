@@ -1,5 +1,5 @@
-title: 🌈JunHoo
-description: "A Jekyll Blog Theme For Hackers"
+title: 🌈 JunHoo
+description: ""
 author:
   name: "JHJ"
   email: "clotjin@gmail.com"
@@ -28,5 +28,5 @@ plugins:
   - jekyll-sitemap
 
 # Custom variables
-owner : "SomeHacker"
+owner : "JHJ"
 year : "2020"
