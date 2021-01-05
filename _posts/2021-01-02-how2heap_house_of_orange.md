@@ -109,7 +109,7 @@ pwndbg> x/4gx p1+0x3f0
 0x602410: 0x0000000000000000 0x0000000000000000
 ```
 
-此时，更改topchunk的大小，使其页对齐，同时prev_inuse被置为1。这样做的目的是为了下一次malloc一定大小(大于topchunk更改后的大小)时，可以将剩下的top chunk释放掉，插入unsorted bin。
+此时，更改topchunk的大小，该大小必须页对齐，同时prev_inuse被置为1。这样做的目的是为了下一次malloc一定大小(大于topchunk更改后的大小)时，可以将剩下的top chunk释放掉，插入unsorted bin。
 
 在此之后，top指向了topchunk，大小改为了0xc01:
 

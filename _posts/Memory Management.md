@@ -57,7 +57,7 @@ It is calculated as follows:
     1. single linked list
     2. LIFO
     3. free后"P"位（是否被使用）不置0，不合并
-    4. 16 ～ 64+16(B) /bins (total 10 bins)
+    4. 16 ～ 64+16(B) /bins (total 10 bins, 64bit: 32 ~ 128)
 
 - 来源：
 
