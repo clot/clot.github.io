@@ -1,11 +1,9 @@
 ---
 layout: post
-title: picoCTF2020 - Sice Cream 
+title: picoCTF - Sice Cream 
 category: PWN
 published: true
 ---
-
-## picoCTF2020 - sice_cream
 
 [sice_cream 题目链接](https://play.picoctf.org/practice/challenge/55?category=6&page=1)
 
