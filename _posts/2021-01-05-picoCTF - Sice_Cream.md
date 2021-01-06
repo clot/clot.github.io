@@ -59,7 +59,7 @@ buy(20, 'E'*8) # 5
 
 ### 插入unsorted bin
 
-这一步通过reintroduce的功能，改写name chunk的size字段，大于MAX_FAST_SIZE即可，在64位上最大是0x88，所以这里设置为0x90 | previnuse 1。然后通过eat来将其放到unsorted bin中，此时name + 0x10指向的是unsorted bin也就是libc中的地址。
+这一步通过reintroduce的功能，改写name chunk的size字段，大于`MAX_FAST_SIZE`即可，在64位上最大是0x88，所以这里设置为0x90 | previnuse 1。然后通过eat来将其放到unsorted bin中，此时name + 0x10指向的是unsorted bin也就是libc中的地址。
 
 ```py
 reintroduce(p64(0) + p64(0x91))
@@ -68,7 +68,7 @@ eat(5)
 
 ### leak libc
 
-通过reintroduce来改写字符串并leak libc的地址，再通过system和_IO_list_all函数的偏移来计算出它们各自的实际地址。
+通过reintroduce来改写字符串并leak libc的地址，再通过`system`和`_IO_list_all`函数的偏移来计算出它们各自的实际地址。
 
 ```py
 # leak libc: unsorted bin address
@@ -95,9 +95,9 @@ log.info("IO_list_all: {}".format(hex(IOListAllAddr)))
 
 如果要使指针A的值指向unsorted bin，则需要将其-0x10后放置到chunk->bk的位置，这样fake chunk的fd也就是A就会指向unsorted bin。
 
-同时需要在name这块内存中伪造一个FILE结构体。上一篇[house_of_orange的分析](../how2heap_house_of_orange)中对FSOP已经有较详细的介绍，这里大概说明下：在程序退出时会触发一个刷新IO的机制，此时会遍历IO_list_all的chain指针，假设当前遍历到了_IO_FILE_plus A，则会调用A的vtable中的`_IO_overflow(fp, EOF)`函数刷新IO，我们的目的也就是替换掉`_IO_overflow`这个函数以及它的fp参数。同时要绕过在执行该函数前对`(fp->_mode <= 0 && fp->_IO_write_ptr > fp->_IO_write_base)`的检查。
+同时需要在name这块内存中伪造一个FILE结构体。上一篇[house_of_orange的分析](../how2heap_house_of_orange)中对FSOP已经有较详细的介绍，这里大概说明下：在程序退出时会触发一个刷新IO的机制，此时会遍历`IO_list_all`的chain指针，假设当前遍历到了`_IO_FILE_plus A`，则会调用A的vtable中的`_IO_overflow(fp, EOF)`函数刷新IO，我们的目的也就是替换掉`_IO_overflow`这个函数以及它的fp参数。同时要绕过在执行该函数前对`(fp->_mode <= 0 && fp->_IO_write_ptr > fp->_IO_write_base)`的检查。
 
-通过计算结构体中vtable以及_mode等字段的偏移，来设置我们的payload。但此时该结构体还未插入_IO_list_all的chain(fp + 0x68)字段中，由于此时_IO_list_all指向的是unsorted bin，所以我们需要将伪造的结构体插入到unosorted bin + 0x68即smallbin[4](90 ~ 98)的位置。
+通过计算结构体中vtable以及_mode等字段的偏移，来设置我们的payload。但此时该结构体还未插入`_IO_list_all`的chain(fp + 0x68)字段中，由于此时`_IO_list_all`指向的是unsorted bin，所以我们需要将伪造的结构体插入到unosorted bin + 0x68即smallbin[4](90 ~ 98)的位置。
 
 所以我们通过改写fake chunk的大小为0x61，使下次malloc时，将unsorted bin中的chunk放到对应的bin中，也就是smallbin[4]的位置。
 
@@ -111,7 +111,7 @@ reintroduce(payload)
 
 ### 获得shell
 
-最后只需再触发一次malloc，在malloc检查的过程中会发现IO_list_all指向的堆块已损坏便crash了。此时刷新IO，即调用`system("/bin/sh")`
+最后只需再触发一次malloc，在malloc检查的过程中会发现`IO_list_all`指向的堆块已损坏便crash了。此时刷新IO，即调用`system("/bin/sh")`
 
 ```py
 # trigger malloc then get the shell after crash 
