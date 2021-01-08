@@ -59,7 +59,7 @@ buy(20, 'E'*8) # 5
 
 ### 插入unsorted bin
 
-这一步通过reintroduce的功能，改写name chunk的size字段，大于`MAX_FAST_SIZE`即可，在64位上最大是0x88，所以这里设置为0x90 | previnuse 1。然后通过eat来将其放到unsorted bin中，此时name + 0x10指向的是unsorted bin也就是libc中的地址。
+这一步通过reintroduce的功能，改写name chunk的size字段，大于`MAX_FAST_SIZE`即可，在64位上最大是0x88，所以这里设置为`0x90 | previnuse 1`。然后通过eat来将其放到unsorted bin中，此时name + 0x10指向的是unsorted bin也就是libc中的地址。
 
 ```py
 reintroduce(p64(0) + p64(0x91))
