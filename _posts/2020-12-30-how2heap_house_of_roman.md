@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 2020-12-30-how2heap_house_of_roman
+title: how2heap_house_of_roman
 published: true
 ---
 
