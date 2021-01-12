@@ -1,6 +1,6 @@
 ---
 layout: page
-title: About
+title: About ME
 ---
 
-## Contact Me: clotjin@gmail.com QQ: 53019917
+## Contact Me: clotjin@gmail.com
