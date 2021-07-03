@@ -17,7 +17,6 @@ Xcode 8.3.3
 IDA 6.8
 			
 #### 安装过程：
-<!-- more -->
 
 1. 下载FRIEND：[FRIEND下载地址](https://github.com/alexhude/FRIEND)
 FRIEND插件依赖两个SDK：**idasdk**和**hexrays_sdk**，编译前需要先下载这两个SDK，将内容拷贝到相应目录。否则会出现编译失败。

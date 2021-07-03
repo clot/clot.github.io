@@ -17,8 +17,6 @@ published: true
 
 [On-Demand Resources Essentials](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/On_Demand_Resources_Guide/)
 
-<!-- more -->
-
 将图片、音频等资源文件分离出来，开发阶段将资源按照ResourceTag区分，存放在苹果的服务器上。App**按需要**发起请求，由操作系统来管理下载和存储。App拿到这些资源后释放请求。
 下载的资源在多个启动周期内一直存放在设备上，访问更快。
 
