@@ -10,7 +10,7 @@ published: true
 
 在 iOS 开发中，App的崩溃原因有很多种，这篇文章主要阐述我所使用的防止**发送未知消息*(unrecognized selector)***导致崩溃的方法及思路，希望能起到抛砖引玉的作用。若有错误，欢迎指出！
 
-** unrecognized selector sent to instance 0x7faa2a132c0**
+**unrecognized selector sent to instance 0x7faa2a132c0**
 
 调试过程中如果看到输出这句话，我们马上就能知道某个对象并没有实现向他发送的消息。如果是在已经上线的版本中发现的……GAME OVER...（当然你也可以用热修复）
 
@@ -19,7 +19,7 @@ published: true
 
 我们先了解下这个补救机制：
 
-![runtime_sendMsg.png](../assets/images/runtime_sendMsg.jpg)
+![runtime_sendMsg.png](../assets/images/CrashProctector/runtime_sendMsg.jpg)
 
 直到最后一步消息无法处理后，我们的App就崩溃了，随后我们就看到了熟悉的unrecognized selector...
 这些方法究竟能做什么，我们来看看苹果官方的描述（我对其中比较重要的部分翻译了一下）：
@@ -69,7 +69,7 @@ OC 方法在底层的C函数的实现中需要至少两个参数：**self 和 _c
 
 创建一个Protector类，没必要new文件出来，动态生成一个就可以了。注意，如果这个方法被执行到两次，连续两次创建同一个类一定会崩溃，所以我们要加一层判断：
 
-```
+```Objective-C
 - (id)forwardingTargetForSelector:(SEL)aSelector
 {
     
@@ -84,7 +84,7 @@ OC 方法在底层的C函数的实现中需要至少两个参数：**self 和 _c
 
 ~~然后我们要为这个类添加方法，在添加方法之前我们也要做一层判断，是否已经添加过这个方法~~（此处文末有更新说明）
 
-```objective
+```Objective-C
         NSString *selectorStr = NSStringFromSelector(aSelector);
         // 检查类中是否存在该方法，不存在则添加
         if (![self isExistSelector:aSelector inClass:protectorCls])
@@ -189,7 +189,7 @@ OC 方法在底层的C函数的实现中需要至少两个参数：**self 和 _c
 试验中，我对一个label perform了一个未知的方法：callMeTryTry，由于他是一个UIRespnder的子类，所以会进入调用我们的 Protector。控制台输出如下，并且没有崩溃。（所有日志不是真的崩溃时候的日志，前面都带有 PROTECTOR 字样，全都是我代码里的输出），你也可以不进行类的判断试一下，你会看到很多这样的输出。
 
 
-![console_log.png](../assets/images/console_log.jpg)
+![console_log.png](../assets/images/CrashProctector/console_log.jpg)
 
 以上就是本文全部，希望对各位有帮助，有问题也可以互相交流。
 
