@@ -1,6 +1,6 @@
 ---
 layout: page
-title: About ME
+title: About Me
 ---
 
 ## Contact Me: clotjin@gmail.com
