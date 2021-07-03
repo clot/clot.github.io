@@ -19,7 +19,7 @@ published: true
 
 我们先了解下这个补救机制：
 
-![runtime_sendMsg.png](../assets/images/CrashProctector/runtime_sendMsg.jpg)
+![runtime_sendMsg.png](../assets/images/CrashProtector/runtime_sendMsg.jpg)
 
 直到最后一步消息无法处理后，我们的App就崩溃了，随后我们就看到了熟悉的unrecognized selector...
 这些方法究竟能做什么，我们来看看苹果官方的描述（我对其中比较重要的部分翻译了一下）：
@@ -189,7 +189,7 @@ OC 方法在底层的C函数的实现中需要至少两个参数：**self 和 _c
 试验中，我对一个label perform了一个未知的方法：callMeTryTry，由于他是一个UIRespnder的子类，所以会进入调用我们的 Protector。控制台输出如下，并且没有崩溃。（所有日志不是真的崩溃时候的日志，前面都带有 PROTECTOR 字样，全都是我代码里的输出），你也可以不进行类的判断试一下，你会看到很多这样的输出。
 
 
-![console_log.png](../assets/images/CrashProctector/console_log.jpg)
+![console_log.png](../assets/images/CrashProtector/console_log.jpg)
 
 以上就是本文全部，希望对各位有帮助，有问题也可以互相交流。
 
